@@ -37,6 +37,11 @@ namespace Pai.Controllers
             return View(projectList);
         }
 
+        public ActionResult Test()
+        {
+            return View();
+        }
+
         public ActionResult SurveyInfo(string id)
         {
             var model = new {label=id }

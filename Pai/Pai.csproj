@@ -254,6 +254,7 @@
     <Content Include="Views\ProjectModels\Details.cshtml" />
     <Content Include="Views\ProjectModels\Edit.cshtml" />
     <Content Include="Views\ProjectModels\Index.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

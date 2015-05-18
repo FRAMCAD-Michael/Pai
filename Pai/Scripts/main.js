@@ -1,57 +1,69 @@
 ﻿$(document).ready(function () {
 
-    var w = 600,
-                h = 400,
-                z = d3.scale.category20b(),
-                i = 0;
+    var drawChart = function (data) {
+        var width = 960,
+            height = 500;
 
-    var svg = d3.select("body").append("svg:svg")
-        .attr("width", w)
-        .attr("height", h)
-        .on("mousemove", particle);
+        var x = d3.scale.ordinal()
+            .rangeRoundBands([0, width], .1);
 
-    function particle() {
-        var m = d3.mouse(this);
+        var y = d3.scale.linear()
+            .range([height, 0]);
 
-        svg.append("svg:rect")
-            .attr("x", m[0] - 10)
-            .attr("y", m[1] - 10)
-            .attr("height", 20)
-            .attr("width", 20)
-            .attr("rx", 10)
-            .attr("ry", 10)
-            .style("stroke", z(++i))
-            .style("stroke-opacity", 1)
-            .style("opacity", 0.7)
-          .transition()
-            .duration(5000)
-            .ease(Math.sqrt)
-            .attr("x", m[0] - 100)
-            .attr("y", m[1] - 100)
-            .attr("height", 200)
-            .attr("width", 200)
-            .style("stroke-opacity", 1e-6)
-            .style("opacity", 1e-6)
-            .remove();
-    }
+        var chart = d3.select(".chart")
+            .attr("width", width)
+            .attr("height", height);
+
+        d3.tsv(data, type, function(error, data) {
+            x.domain(data.map(function(d) { return d.name; }));
+            y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+            var bar = chart.selectAll("g")
+                .data(data)
+              .enter().append("g")
+                .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)"; });
+
+            bar.append("rect")
+                .attr("y", function(d) { return y(d.value); })
+                .attr("height", function(d) { return height - y(d.value); })
+                .attr("width", x.rangeBand());
+
+            bar.append("text")
+                .attr("x", x.rangeBand() / 2)
+                .attr("y", function(d) { return y(d.value) + 3; })
+                .attr("dy", ".75em")
+                .text(function(d) { return d.value; });
+        });
+
+        function type(d) {
+            d.value = +d.value; // coerce to number
+            return d;
+        }
+
 
     //Retrieve data from 
     var retrieveChartData = function () {
         var projectId = $(this).attr('id');
         var options = {
             url: "/Home/SurveyInfo",
-            data: {'id':projectId},
+            data: { 'id': projectId },
             type: "GET",
         };
         $.ajax(options).done(function (data) {
-            var outinfo ="gmail";
+            var items = [];//Need to use array
             $.each(data, function (key, val) {
-                outinfo =val;
-
+                items.push(val);
             });
-            //alert(outinfo);
-            
-});
+           
+            $(".table tr").each(function () {
+                $(this).attr("class", "");
+            });
+            $('#' + projectId).attr("class", "active");
+            $(".chart").empty();
+            $(".chart").fadeOut(10);
+            $(".chart").fadeIn(200);
+            drawChart(items);
+        });
 
     };
 
