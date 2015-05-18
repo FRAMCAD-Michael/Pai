@@ -44,8 +44,7 @@ namespace Pai.Controllers
 
         public ActionResult SurveyInfo(string id)
         {
-            var model = new {label=id }
-                ;
+            var model = new {name="Michael", age=54 };
             return Json(model, JsonRequestBehavior.AllowGet);
         }
     }
