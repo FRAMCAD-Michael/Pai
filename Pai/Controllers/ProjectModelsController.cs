@@ -17,7 +17,7 @@ namespace Pai.Controllers
         // GET: ProjectModels
         public ActionResult Index()
         {
-            return View(db.ProjectModels.ToList());
+            return View(db.Project.ToList());
         }
 
         // GET: ProjectModels/Details/5
@@ -27,7 +27,7 @@ namespace Pai.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProjectModel projectModel = db.ProjectModels.Find(id);
+            Project projectModel = db.Project.Find(id);
             if (projectModel == null)
             {
                 return HttpNotFound();
@@ -46,11 +46,11 @@ namespace Pai.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProjectName,ProjectStatus,ProjectOwner,CreatedOn")] ProjectModel projectModel)
+        public ActionResult Create([Bind(Include = "Id,ProjectName,ProjectStatus,ProjectOwner,CreatedOn")] Project projectModel)
         {
             if (ModelState.IsValid)
             {
-                db.ProjectModels.Add(projectModel);
+                db.Project.Add(projectModel);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +65,7 @@ namespace Pai.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProjectModel projectModel = db.ProjectModels.Find(id);
+            Project projectModel = db.Project.Find(id);
             if (projectModel == null)
             {
                 return HttpNotFound();
@@ -78,7 +78,7 @@ namespace Pai.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProjectName,ProjectStatus,ProjectOwner,CreatedOn")] ProjectModel projectModel)
+        public ActionResult Edit([Bind(Include = "Id,ProjectName,ProjectStatus,ProjectOwner,CreatedOn")] Project projectModel)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace Pai.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProjectModel projectModel = db.ProjectModels.Find(id);
+            Project projectModel = db.Project.Find(id);
             if (projectModel == null)
             {
                 return HttpNotFound();
@@ -109,8 +109,8 @@ namespace Pai.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            ProjectModel projectModel = db.ProjectModels.Find(id);
-            db.ProjectModels.Remove(projectModel);
+            Project projectModel = db.Project.Find(id);
+            db.Project.Remove(projectModel);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

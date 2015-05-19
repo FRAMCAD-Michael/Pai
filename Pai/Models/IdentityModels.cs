@@ -20,6 +20,10 @@ namespace Pai.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+
+        public DbSet<Project> Project { get; set; }
+        public DbSet<ProjectMetrics> Metrics { get; set; }
+        public DbSet<ProjectRating> Rating { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -29,7 +33,5 @@ namespace Pai.Models
         {
             return new ApplicationDbContext();
         }
-
-        public System.Data.Entity.DbSet<Pai.Models.ProjectModel> ProjectModels { get; set; }
     }
 }
